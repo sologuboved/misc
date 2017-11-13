@@ -13,13 +13,24 @@ def count_pages(pages):
     return count
 
 
+def groupcount_pages(pages):
+    groupcount = dict()
+    count = count_pages(pages)
+    for val in count.values():
+        groupcount[val] = groupcount.get(val, 0) + 1
+    return groupcount
+
+
 def fill_in_zeros(num):
     num = str(num)
     return num + ':' + ' ' * (10 - len(num))
 
 
-def prettyprint_count(pages, val=False):
-    count = count_pages(pages).items()
+def prettyprint_count(pages, grouped=False, val=False):
+    if grouped:
+        count = groupcount_pages(pages).items()
+    else:
+        count = count_pages(pages).items()
     if val:
         index = 1
     else:
@@ -36,7 +47,10 @@ if __name__ == '__main__':
            110, 114, 117, 119, 120, 122, 133, 135, 140, 145, 152, 153, 154, 155, 161, 169, 176, 177, 181, 189, 191, 193,
            202, 203, 206, 209, 211, 214, 231, 235, 238, 240, 243, 245, 248, 252, 253, 254, 261, 263, 264, 266, 268, 269,
            271, 276, 280, 285, 288, 291, 293, 294, 298, 300, 302, 311, 313, 315, 317, 321, 325, 335, 338, 341, 344, 349,
-           351, 355, 358, 359)
-    prettyprint_count(m_d, True)
+           351, 355, 358, 359, 363, 363, 365, 370, 376, 380, 384, 386, 389, 392, 394, 397, 400, 402, 407, 408, 410, 413,
+           414, 416, 418, 419, 421, 426, 427, 428, 428, 431, 434, 436, 439, 441, 444, 445, 449, 450, 454, 461, 469, 479,
+           480)
+    prettyprint_count(m_d, grouped=True, val=False)
+    # print groupcount_pages(m_d)
 
 
