@@ -1,19 +1,34 @@
-"""1st file is current, 
-2nd and 3rd files are for comparison, 
-!!!!in the 4th file the results will be written,
-so BE CAREFUL WITH IT -
-the original contens will be deleted!!!!
-""" 
+def show_contents(source_filename1, source_filename2, target_filename=None):
 
-from sys import argv
-file0, file1, file2, file3 = argv
+    def compare_contents():
 
-result = open(file3, 'w')
+        with open(source_filename1) as source_handler1, open(source_filename2) as source_handler2:
 
-number = 0
+            if target_filename:
+                num = 0
+                for line1, line2 in zip(source_handler1.readlines(), source_handler2.readlines()):
+                    num += 1
+                    n = len(str(num)) + 6
+                    if line1 != line2:
+                        target_handler.write("Line " + str(num) + " " + line1 + " " * n + line2)
+            else:
+                for line1, line2 in zip(source_handler1.readlines(), source_handler2.readlines()):
+                    if line1 != line2:
+                        print
+                        print line1
+                        print line2
+                        break
+                else:
+                    print "are the same"
 
-for line1, line2 in zip(open(file1).readlines(), open(file2).readlines()):
-    number += 1
-    n = len(str(number)) + 6
-    if line1 != line2:
-        result.write("Line " + str(number) + " " + line1 + " " * n + line2) 
+    if target_filename:
+        with open(target_filename, 'w') as target_handler:
+            compare_contents()
+    else:
+        compare_contents()
+
+
+if __name__ == '__main__':
+    # show_contents('varsd1.txt', 'varsd2.txt', target_filename='varsd0.txt')
+    # show_contents('varsd1.txt', 'varsd2.txt')
+    pass
