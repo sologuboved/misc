@@ -28,16 +28,16 @@ def fill_in_zeros(num):
 
 def prettyprint_count(pages, grouped=False, val=False):
     if grouped:
-        count = groupcount_pages(pages).items()
+        count = list(groupcount_pages(pages).items())
     else:
-        count = count_pages(pages).items()
+        count = list(count_pages(pages).items())
     if val:
         index = 1
     else:
         index = 0
     count.sort(key=lambda p: p[index])
     for page, length in count:
-        print "%s %d" % (fill_in_zeros(page), length)
+        print("%s %d" % (fill_in_zeros(page), length))
 
 
 if __name__ == '__main__':
@@ -50,7 +50,7 @@ if __name__ == '__main__':
            351, 355, 358, 359, 363, 363, 365, 370, 376, 380, 384, 386, 389, 392, 394, 397, 400, 402, 407, 408, 410, 413,
            414, 416, 418, 419, 421, 426, 427, 428, 428, 431, 434, 436, 439, 441, 444, 445, 449, 450, 454, 461, 469, 479,
            480)
-    prettyprint_count(m_d, grouped=True, val=False)
-    # print groupcount_pages(m_d)
-
+    g_g_s = (13, 33, 35, 53, 67, 85, 93, 104, 114, 131, 157, 176, 195, 215, 239, 265, 293, 295, 322, 334, 354, 376, 403,
+             426, 441)
+    prettyprint_count(g_g_s, grouped=False, val=False)
 
