@@ -21,4 +21,5 @@ def find_date(total, per_day, weekdays, excl, start=None):
 
 
 if __name__ == '__main__':
-    print(find_date(223, 1, (5, 6), True))  # 223 chapter 1 chapter per day excluding weekends starting today
+    # print(find_date(223, 1, (5, 6), True))  # 223 chapter 1 chapter per day excluding weekends starting today
+    print(find_date(14 + 12 + 25 + 25 + 15 + 13 + 14 + 15 + 14, 1, (5, 6), True))
