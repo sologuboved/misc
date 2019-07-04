@@ -1,5 +1,4 @@
 import os
-import re
 
 
 def get_line(foldername, scriptname):
@@ -13,8 +12,9 @@ def get_line(foldername, scriptname):
 def get_lines(filename, *args):
     lines = '\n'.join([get_line(foldername, scriptname) for foldername, scriptname in args])
     print(lines)
-    with open(filename, 'wt') as handler:
-        handler.write(lines)
+    if filename:
+        with open(filename, 'wt') as handler:
+            handler.write(lines)
 
 
 def collect_fnames(path, sieve):
@@ -22,8 +22,11 @@ def collect_fnames(path, sieve):
 
 
 if __name__ == '__main__':
-    get_lines('/Users/sologuboved/InfoCulture/datacollector/crontab_lines.txt',
-              *[('datacollector', fname) for fname in collect_fnames('/Users/sologuboved/InfoCulture/datacollector',
-                                                                     lambda x: re.match(r'^updater_.+?\.py$',
-                                                                                        x,
-                                                                                        flags=re.IGNORECASE))])
+    get_lines(None, ('subsidies_db', 'cs_subsidies_updater'))
+
+    # import re
+    # get_lines('/Users/sologuboved/InfoCulture/datacollector/crontab_lines.txt',
+    #           *[('datacollector', fname) for fname in collect_fnames('/Users/sologuboved/InfoCulture/datacollector',
+    #                                                                  lambda x: re.match(r'^updater_.+?\.py$',
+    #                                                                                     x,
+    #                                                                                     flags=re.IGNORECASE))])
