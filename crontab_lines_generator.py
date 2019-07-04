@@ -22,7 +22,7 @@ def collect_fnames(path, sieve):
 
 
 if __name__ == '__main__':
-    get_lines(None, ('subsidies_db', 'cs_subsidies_updater'))
+    get_lines(None, ('db_operations', 'upd_checker'))
 
     # import re
     # get_lines('/Users/sologuboved/InfoCulture/datacollector/crontab_lines.txt',
