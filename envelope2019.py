@@ -19,14 +19,13 @@ class Envelope:
         while True:
             print('\r{}'.format(count), end=str(), flush=True)
             count += 1
-            try:
-                for next_x, next_y in self.get_indices(x, y):
+            for next_x, next_y in self.get_indices(x, y):
+                try:
                     self.res += self.matrix[next_y][next_x]
-            except IndexError:
-                self.write()
-                return
-            else:
-                x, y = next_x, next_y
+                except IndexError:
+                    self.write()
+                    return
+            x, y = next_x, next_y
 
     def get_indices(self, x, y):
         if self.inversion_count > 1:
