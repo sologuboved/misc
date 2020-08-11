@@ -4,9 +4,9 @@ from collections import defaultdict
 
 
 class PrereformSpellchecker:
-    def __init__(self, filename, dump=None):
+    def __init__(self, filename, dump_to=None):
         self.filename = filename
-        self.dump = dump
+        self.dump_to = dump_to
         handler = open(self.filename, 'rt')
         self.contents = handler.read()
         handler.close()
@@ -29,8 +29,8 @@ class PrereformSpellchecker:
     def deliver_report(self):
         print("{} separate instance(s), {} fix(es)".format(len(self.report), sum(self.report.values())))
         if self.report:
-            if self.dump:
-                with open(self.dump, 'w', encoding='utf-8') as handler:
+            if self.dump_to:
+                with open(self.dump_to, 'w', encoding='utf-8') as handler:
                     json.dump(self.report, handler, ensure_ascii=False, sort_keys=True, indent=2)
             else:
                 for fix in self.report:
