@@ -27,7 +27,7 @@ class PrereformSpellchecker:
                     self.report['{} -> {}'.format(raw_word, word)] += 1
 
     def deliver_report(self):
-        print("{} separate instances, {} fixes".format(len(self.report), sum(self.report.values())))
+        print("{} separate instance(s), {} fix(es)".format(len(self.report), sum(self.report.values())))
         if self.report:
             if self.dump:
                 with open(self.dump, 'w', encoding='utf-8') as handler:
@@ -52,5 +52,4 @@ def i_fixer(matchobj):
 
 
 if __name__ == '__main__':
-    prereform_spellchecker = PrereformSpellchecker('post.txt')
-    prereform_spellchecker.launch()
+    PrereformSpellchecker('post.txt').launch()
