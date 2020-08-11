@@ -13,12 +13,12 @@ class PrereformSpellchecker:
         self.report = defaultdict(int)
 
     def launch(self):
-        self.traverse_words()
+        self.parse_by_word()
         with open(self.filename, 'wt') as handler:
             handler.write(self.contents)
         self.deliver_report()
 
-    def traverse_words(self):
+    def parse_by_word(self):
         for raw_word in re.findall(r'\b(\S+?)\b|\s', self.contents):
             if raw_word:
                 word = correct_word(raw_word)
