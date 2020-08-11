@@ -33,8 +33,8 @@ class PrereformSpellchecker:
                 with open(self.dump_to, 'w', encoding='utf-8') as handler:
                     json.dump(self.report, handler, ensure_ascii=False, sort_keys=True, indent=2)
             else:
-                for fix in self.report:
-                    print(fix)
+                for items in self.report.items():
+                    print("{}: {}".format(*items))
 
 
 def correct_word(raw_word):
