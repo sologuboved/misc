@@ -39,7 +39,7 @@ class PrereformSpellchecker:
 
 def correct_word(raw_word):
     word = re.sub(r'(и)(?=[аеёиоуыэюя])', i_fixer, raw_word, flags=re.IGNORECASE)
-    if word.lower() not in ('др', 'проч', 'т', 'д', 'п', 'с', 'сс') and word[-1] in 'бвгджзклмнпрстфхцчшщ':
+    if word.lower() not in ('др', 'проч', 'т', 'д', 'п', 'с', 'сс', 'жж') and word[-1] in 'бвгджзклмнпрстфхцчшщ':
         word += 'ъ'
     return word
 
