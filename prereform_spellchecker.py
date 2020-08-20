@@ -23,7 +23,7 @@ class PrereformSpellchecker:
             if raw_word:
                 word = correct_word(raw_word)
                 if word != raw_word:
-                    self.contents = self.contents.replace(raw_word, word)
+                    self.contents = re.sub(r'\b' + raw_word + r'\b', word, self.contents)
                     self.report['{} -> {}'.format(raw_word, word)] += 1
 
     def deliver_report(self):
@@ -38,8 +38,9 @@ class PrereformSpellchecker:
 
 
 def correct_word(raw_word):
+    abbreviations = ('др', 'проч', 'т', 'д', 'п', 'с', 'сс', 'жж', 'цит')
     word = re.sub(r'(и)(?=[аеёиоуыэюя])', i_fixer, raw_word, flags=re.IGNORECASE)
-    if word.lower() not in ('др', 'проч', 'т', 'д', 'п', 'с', 'сс', 'жж') and word[-1] in 'бвгджзклмнпрстфхцчшщ':
+    if word.lower() not in abbreviations and word[-1].lower() in 'бвгджзклмнпрстфхцчшщ':
         word += 'ъ'
     return word
 
