@@ -39,7 +39,7 @@ class PrereformSpellchecker:
 
 def correct_word(raw_word):
     abbreviations = ('др', 'проч', 'т', 'д', 'п', 'с', 'сс', 'жж', 'цит')
-    word = re.sub(r'(и)(?=[аеёиоуыэюя])', i_fixer, raw_word, flags=re.IGNORECASE)
+    word = re.sub(r'(и)(?=[аеёийоуыэюя])', i_fixer, raw_word, flags=re.IGNORECASE)
     if word.lower() not in abbreviations and word[-1].lower() in 'бвгджзклмнпрстфхцчшщ':
         word += 'ъ'
     return word
