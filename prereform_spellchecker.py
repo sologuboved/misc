@@ -43,33 +43,32 @@ class PrereformSpellchecker:
                     print("{}: {}".format(*items))
 
 
-def correct_word(raw_word):
+def correct_word(word):
     punctuation_marks = '.,<>/?;:\'"[]{}!()-_=+\\'
     ending = ''
     while True:
         for punctuation_mark in punctuation_marks:
-            if raw_word.endswith(punctuation_mark):
+            if word.endswith(punctuation_mark):
                 ending = punctuation_mark + ending
-                raw_word = raw_word[:-1]
-                if not raw_word:
+                word = word[:-1]
+                if not word:
                     return ending
                 break
         else:
             break
-    if re.match(r'[А-ЯІѲ]\.[А-ЯІѲ]', raw_word) or (
+    if re.match(r'[А-ЯІѲ]\.[А-ЯІѲ]', word) or (
             ending.startswith('.') and (
             (
-                    raw_word.lower() in ('др', 'проч', 'т.д', 'т.п', 'см', 'жж', 'цит')
+                    word.lower() in ('др', 'проч', 'т.д', 'т.п', 'см', 'жж', 'цит')
             ) or (
-                    raw_word.isupper() and len(raw_word) == 1
+                    word.isupper() and len(word) == 1
             )
                 )
     ):
-        return raw_word + ending
-    raw_word = re.sub(r'(и)(?=[аеёийоуыэюя])', i_fixer, raw_word, flags=re.IGNORECASE)
-    if raw_word[-1].lower() in 'бвгджзклмнпрстфхцчшщ':
-        raw_word += 'ъ'
-    return raw_word + ending
+        return word + ending
+    word = re.sub(r'(и)(?=[аеёийоуыэюя])', i_fixer, word, flags=re.IGNORECASE)
+    word = er_fixer(word)
+    return word + ending
 
 
 def i_fixer(matchobj):
@@ -77,6 +76,13 @@ def i_fixer(matchobj):
         return 'І'
     else:
         return 'і'
+
+
+def er_fixer(raw_word):
+    if raw_word[-1].lower() in 'бвгджзклмнпрстфхцчшщ':
+        return raw_word + 'ъ'
+    else:
+        return raw_word
 
 
 if __name__ == '__main__':
