@@ -19,14 +19,18 @@ class PrereformSpellchecker:
         self.deliver_report()
 
     def parse_by_word(self):
-        words = self.contents.split()
-        for index in range(len(words)):
-            raw_word = words[index].strip()
-            word = correct_word(raw_word)
-            if raw_word != word:
-                words[index] = word
-                self.report[f'{raw_word} -> {word}'] += 1
-        self.contents = " ".join(words)
+        paragraphs = self.contents.split('\n')
+        for paragraph_index in range(len(paragraphs)):
+            paragraph = paragraphs[paragraph_index]
+            words = paragraph.split()
+            for index in range(len(words)):
+                raw_word = words[index].strip()
+                word = correct_word(raw_word)
+                if raw_word != word:
+                    words[index] = word
+                    self.report[f'{raw_word} -> {word}'] += 1
+            paragraphs[paragraph_index] = " ".join(words)
+        self.contents = '\n'.join(paragraphs)
 
     def deliver_report(self):
         print("{} separate instance(s), {} fix(es)".format(len(self.report), sum(self.report.values())))
@@ -73,5 +77,3 @@ def i_fixer(matchobj):
 
 if __name__ == '__main__':
     PrereformSpellchecker('post.txt').launch()
-
-# ,<>/?;:\'"\[\]{}!()\-_=+\s
