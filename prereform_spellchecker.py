@@ -44,8 +44,6 @@ class PrereformSpellchecker:
 
 
 def correct_word(raw_word):
-    abbreviations = ('др', 'проч', 'т.д', 'т.п', 'см', 'жж', 'цит')
-    consonants = 'бвгджзклмнпрстфхцчшщ'
     punctuation_marks = '.,<>/?;:\'"[]{}!()-_=+\\'
     ending = ''
     while True:
@@ -60,12 +58,16 @@ def correct_word(raw_word):
             break
     if re.match(r'[А-ЯІѲ]\.[А-ЯІѲ]', raw_word) or (
             ending.startswith('.') and (
-            (raw_word.lower() in abbreviations) or (raw_word.isupper() and len(raw_word) == 1)
+            (
+                    raw_word.lower() in ('др', 'проч', 'т.д', 'т.п', 'см', 'жж', 'цит')
+            ) or (
+                    raw_word.isupper() and len(raw_word) == 1
+            )
                 )
     ):
         return raw_word + ending
     raw_word = re.sub(r'(и)(?=[аеёийоуыэюя])', i_fixer, raw_word, flags=re.IGNORECASE)
-    if raw_word[-1].lower() in consonants:
+    if raw_word[-1].lower() in 'бвгджзклмнпрстфхцчшщ':
         raw_word += 'ъ'
     return raw_word + ending
 
