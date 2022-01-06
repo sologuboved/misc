@@ -59,7 +59,9 @@ def correct_word(word):
         else:
             break
     word = re.sub(r'(и)(?=[аеёийоуыэюя])', i_fixer, word, flags=re.IGNORECASE)  # удивленіе
-    if len(word) > 1 and word.isupper() and not set(word) - set(_consonants.upper()):  # СССР
+    if (word in ('ИНН', 'ЦАР', 'СНИЛС')
+            or len(word) > 1 and word.isupper()
+            and not set(word) - set(_consonants.upper())):  # СССР
         return word + ending
     if ('.' in word  # Б.Ф.[ Поршневъ]
             or word.lower() in ('др', 'проч', 'см', 'жж', 'цит')  # цит.[ по]
