@@ -46,16 +46,18 @@ class PrereformSpellchecker:
 def correct_word(raw_word):
     abbreviations = ('др', 'проч', 'т.д', 'т.п', 'см', 'жж', 'цит')
     consonants = 'бвгджзклмнпрстфхцчшщ'
+    punctuation_marks = '.,<>/?;:\'"[]{}!()-_=+\\'
     ending = ''
     while True:
-        for punctuation_mark in '.,<>/?;:\'"[]{}!()-_=+\\':
+        for punctuation_mark in punctuation_marks:
             if raw_word.endswith(punctuation_mark):
                 ending = punctuation_mark + ending
                 raw_word = raw_word[:-1]
+                if not raw_word:
+                    return ending
                 break
         else:
             break
-    print(raw_word, ending)
     if re.match(r'[А-ЯІѲ]\.[А-ЯІѲ]', raw_word) or (
             ending.startswith('.') and (
             (raw_word.lower() in abbreviations) or (raw_word.isupper() and len(raw_word) == 1)
