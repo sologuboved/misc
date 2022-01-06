@@ -19,12 +19,14 @@ class PrereformSpellchecker:
         self.deliver_report()
 
     def parse_by_word(self):
-        for raw_word in re.findall(r'\b(\S+?)\b|\s', self.contents):
-            if raw_word:
-                word = correct_word(raw_word)
-                if word != raw_word:
-                    self.contents = re.sub(r'\b' + raw_word + r'\b', word, self.contents)
-                    self.report['{} -> {}'.format(raw_word, word)] += 1
+        words = self.contents.split()
+        for index in range(len(words)):
+            raw_word = words[index].strip()
+            word = correct_word(raw_word)
+            if raw_word != word:
+                words[index] = word
+                self.report[f'{raw_word} -> {word}'] += 1
+        self.contents = " ".join(words)
 
     def deliver_report(self):
         print("{} separate instance(s), {} fix(es)".format(len(self.report), sum(self.report.values())))
@@ -38,11 +40,28 @@ class PrereformSpellchecker:
 
 
 def correct_word(raw_word):
-    abbreviations = ('др', 'проч', 'т', 'д', 'п', 'сс', 'жж', 'цит')
-    word = re.sub(r'(и)(?=[аеёийоуыэюя])', i_fixer, raw_word, flags=re.IGNORECASE)
-    if word.lower() not in abbreviations and word[-1].lower() in 'бвгджзклмнпрстфхцчшщ':
-        word += 'ъ'
-    return word
+    abbreviations = ('др', 'проч', 'т.д', 'т.п', 'см', 'жж', 'цит')
+    consonants = 'бвгджзклмнпрстфхцчшщ'
+    ending = ''
+    while True:
+        for punctuation_mark in '.,<>/?;:\'"[]{}!()-_=+\\':
+            if raw_word.endswith(punctuation_mark):
+                ending = punctuation_mark + ending
+                raw_word = raw_word[:-1]
+                break
+        else:
+            break
+    print(raw_word, ending)
+    if re.match(r'[А-ЯІѲ]\.[А-ЯІѲ]', raw_word) or (
+            ending.startswith('.') and (
+            (raw_word.lower() in abbreviations) or (raw_word.isupper() and len(raw_word) == 1)
+                )
+    ):
+        return raw_word + ending
+    raw_word = re.sub(r'(и)(?=[аеёийоуыэюя])', i_fixer, raw_word, flags=re.IGNORECASE)
+    if raw_word[-1].lower() in consonants:
+        raw_word += 'ъ'
+    return raw_word + ending
 
 
 def i_fixer(matchobj):
@@ -54,3 +73,5 @@ def i_fixer(matchobj):
 
 if __name__ == '__main__':
     PrereformSpellchecker('post.txt').launch()
+
+# ,<>/?;:\'"\[\]{}!()\-_=+\s
