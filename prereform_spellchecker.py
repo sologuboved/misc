@@ -56,18 +56,18 @@ def correct_word(word):
                 break
         else:
             break
-    if re.match(r'[А-ЯІѲ]\.[А-ЯІѲ]', word) or (
+    if re.match(r'[А-ЯІѲ]\.[А-ЯІѲ]', word) or (  # Б.Ф. [Поршневъ]
             ending.startswith('.') and (
             (
                     word.lower() in ('др', 'проч', 'т.д', 'т.п', 'см', 'жж', 'цит')
             ) or (
-                    word.isupper() and len(word) == 1
+                    word.isupper() and len(word) == 1  # Б. [Поршневъ]
             )
                 )
     ):
         return word + ending
+    word = '-'.join(map(er_fixer, word.split('-')))  # какъ-нибудь
     word = re.sub(r'(и)(?=[аеёийоуыэюя])', i_fixer, word, flags=re.IGNORECASE)
-    word = er_fixer(word)
     return word + ending
 
 
