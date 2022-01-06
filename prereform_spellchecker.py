@@ -2,6 +2,8 @@ import re
 import json
 from collections import defaultdict
 
+_consonants = 'бвгджзклмнпрстфхцчшщ'
+
 
 class PrereformSpellchecker:
     def __init__(self, filename, dump_to=None):
@@ -56,12 +58,14 @@ def correct_word(word):
                 break
         else:
             break
-    if '.' in word or word.lower() in ('др', 'проч', 'см', 'жж', 'цит') or (  # Б.Ф.[ Поршневъ], цит.[ по]
-            ending.startswith('.') and word[0].isupper() and len(word) <= 2  # Дж.[ Джейнсъ]
-    ):
+    word = re.sub(r'(и)(?=[аеёийоуыэюя])', i_fixer, word, flags=re.IGNORECASE)  # удивленіе
+    if len(word) > 1 and word.isupper() and not set(word) - set(_consonants.upper()):  # СССР
+        return word + ending
+    if ('.' in word  # Б.Ф.[ Поршневъ]
+            or word.lower() in ('др', 'проч', 'см', 'жж', 'цит')  # цит.[ по]
+            or (ending.startswith('.') and word[0].isupper() and len(word) <= 2)):  # Дж.[ Джейнсъ]
         return word + ending
     word = '-'.join(map(er_fixer, word.split('-')))  # какъ-нибудь
-    word = re.sub(r'(и)(?=[аеёийоуыэюя])', i_fixer, word, flags=re.IGNORECASE)
     return word + ending
 
 
@@ -72,11 +76,14 @@ def i_fixer(matchobj):
         return 'і'
 
 
-def er_fixer(raw_word):
-    if raw_word[-1].lower() in 'бвгджзклмнпрстфхцчшщ':
-        return raw_word + 'ъ'
+def er_fixer(word):
+    if word[-1].lower() in _consonants:
+        if word.isupper() and len(word) > 1:  # ВОТЪ
+            return word + 'Ъ'
+        else:
+            return word + 'ъ'
     else:
-        return raw_word
+        return word
 
 
 if __name__ == '__main__':
