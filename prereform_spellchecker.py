@@ -64,7 +64,7 @@ def correct_word(word):
             and not set(word) - set(_consonants.upper())):  # СССР
         return word + ending
     if ('.' in word  # Б.Ф.[ Поршневъ]
-            or word.lower() in ('др', 'проч', 'см', 'жж', 'цит')  # цит.[ по]
+            or word.lower() in ('др', 'жж', 'проч', 'см', 'ср', 'цит')  # цит.[ по]
             or (ending.startswith('.') and word[0].isupper() and len(word) <= 2)):  # Дж.[ Джейнсъ]
         return word + ending
     word = '-'.join(map(er_fixer, word.split('-')))  # какъ-нибудь
