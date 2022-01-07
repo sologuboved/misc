@@ -63,7 +63,7 @@ class PrereformSpellchecker:
                 and not set(word) - set(self.consonants.upper())):  # СССР
             return word + ending
         if ('.' in word  # Б.Ф.[ Поршневъ]
-                or word.lower() in abbreviations  # цит.[ по]
+                or word.lower() in abbreviations  # см.
                 or (word[0] in '<[(' and word[1:].lower() in abbreviations)  # (см.
                 or (ending.startswith('.') and word[0].isupper() and len(word) <= 2)):  # Дж.[ Джейнсъ]
             return word + ending
