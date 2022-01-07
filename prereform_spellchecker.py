@@ -2,13 +2,12 @@ import re
 import json
 from collections import defaultdict
 
-_consonants = 'бвгджзклмнпрстфхцчшщ'
-
 
 class PrereformSpellchecker:
     def __init__(self, filename, dump_to=None):
         self.filename = filename
         self.dump_to = dump_to
+        self.consonants = 'бвгджзклмнпрстфхцчшщ'
         handler = open(self.filename, 'rt')
         self.contents = handler.read()
         handler.close()
@@ -27,7 +26,7 @@ class PrereformSpellchecker:
             words = paragraph.split()
             for index in range(len(words)):
                 raw_word = words[index].strip()
-                word = correct_word(raw_word)
+                word = self.correct_word(raw_word)
                 if raw_word != word:
                     words[index] = word
                     self.report[f'{raw_word} -> {word}'] += 1
@@ -44,50 +43,48 @@ class PrereformSpellchecker:
                 for items in self.report.items():
                     print("{}: {}".format(*items))
 
-
-def correct_word(word):
-    punctuation_marks = '.,<>/?;:\'"[]{}!()-_=+\\'
-    abbreviations = ('др', 'жж', 'проч', 'см', 'ср', 'цит')
-    ending = ''
-    while True:
-        for punctuation_mark in punctuation_marks:
-            if word.endswith(punctuation_mark):
-                ending = punctuation_mark + ending
-                word = word[:-1]
-                if not word:
-                    return ending
+    def correct_word(self, word):
+        punctuation_marks = '.,<>/?;:\'"[]{}!()-_=+\\'
+        abbreviations = ('др', 'жж', 'проч', 'см', 'ср', 'цит')
+        ending = ''
+        while True:
+            for punctuation_mark in punctuation_marks:
+                if word.endswith(punctuation_mark):
+                    ending = punctuation_mark + ending
+                    word = word[:-1]
+                    if not word:
+                        return ending
+                    break
+            else:
                 break
-        else:
-            break
-    word = re.sub(r'(и)(?=[аеёийоуыэюя])', i_fixer, word, flags=re.IGNORECASE)  # удивленіе
-    if (word in ('ИНН', 'ЦАР', 'СНИЛС')
-            or len(word) > 1 and word.isupper()
-            and not set(word) - set(_consonants.upper())):  # СССР
+        word = re.sub(r'(и)(?=[аеёийоуыэюя])', self.i_fixer, word, flags=re.IGNORECASE)  # удивленіе
+        if (word in ('ИНН', 'ЦАР', 'СНИЛС')
+                or len(word) > 1 and word.isupper()
+                and not set(word) - set(self.consonants.upper())):  # СССР
+            return word + ending
+        if ('.' in word  # Б.Ф.[ Поршневъ]
+                or word.lower() in abbreviations  # цит.[ по]
+                or (word[0] in '<[(' and word[1:].lower() in abbreviations)  # (см.
+                or (ending.startswith('.') and word[0].isupper() and len(word) <= 2)):  # Дж.[ Джейнсъ]
+            return word + ending
+        word = '-'.join(map(self.er_fixer, word.split('-')))  # какъ-нибудь
         return word + ending
-    if ('.' in word  # Б.Ф.[ Поршневъ]
-            or word.lower() in abbreviations  # цит.[ по]
-            or (word[0] in '<[(' and word[1:].lower() in abbreviations)  # (см.
-            or (ending.startswith('.') and word[0].isupper() and len(word) <= 2)):  # Дж.[ Джейнсъ]
-        return word + ending
-    word = '-'.join(map(er_fixer, word.split('-')))  # какъ-нибудь
-    return word + ending
 
-
-def i_fixer(matchobj):
-    if matchobj.group(1).isupper():
-        return 'І'
-    else:
-        return 'і'
-
-
-def er_fixer(word):
-    if word[-1].lower() in _consonants:
-        if word.isupper() and len(word) > 1:  # ВОТЪ
-            return word + 'Ъ'
+    def er_fixer(self, word):
+        if word[-1].lower() in self.consonants:
+            if word.isupper() and len(word) > 1:  # ВОТЪ
+                return word + 'Ъ'
+            else:
+                return word + 'ъ'
         else:
-            return word + 'ъ'
-    else:
-        return word
+            return word
+
+    @staticmethod
+    def i_fixer(matchobj):
+        if matchobj.group(1).isupper():
+            return 'І'
+        else:
+            return 'і'
 
 
 if __name__ == '__main__':
