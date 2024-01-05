@@ -1,7 +1,5 @@
 .idea/
-collection.csv
-collection_aberrant.json
-collection_old.csv
+collection/
 post.txt
 userinfo.py
 venv_misc/

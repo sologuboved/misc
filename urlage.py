@@ -8,7 +8,7 @@ from helpers import CsvWriter, get_abs_path, read_csv, which_watch
 
 
 class Urlage:
-    def __init__(self, src='collection.csv'):
+    def __init__(self, src=os.path.join(os.sep, get_abs_path('collection'), 'collection_old.csv')):
         print(f"Processing {src}...")
         self.aberrant_codes = defaultdict(list)
         self.code200 = list()
