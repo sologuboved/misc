@@ -8,14 +8,14 @@ def divide(*arg):
     """
     start = list(arg)
     a = -start.pop(-1)
-    print make_string(start) + "divided by x + (%d)\n" % -a
+    print(make_string(start) + "divided by x + (%d)\n" % -a)
     finish = [start[0]]
     for ind in range(len(start) - 1):
         finish.append(finish[ind] * a + start[ind + 1])
     r = finish.pop(-1)
-    print "=", make_string(finish)
-    print "+ %d / (x + (%d)" % (r, -a)
-    print "(remainder = %d)" % r
+    print("=", make_string(finish))
+    print("+ %d / (x + (%d)" % (r, -a))
+    print("(remainder = %d)" % r)
 
 
 def make_string(lst):

@@ -26,7 +26,7 @@ def factor_polynom(a, b, factored_c, test):
 def make_factored_polynoms(number, border):
     factored_polynoms = list()
     count = 1
-    numbers = range(-border, 0) + range(1, border + 1)
+    numbers = list(range(-border, 0)) + list(range(1, border + 1))
     while count <= number:
         factored_polynoms.append({'a': random.choice(numbers),
                                   'f': random.choice(numbers),
@@ -52,11 +52,9 @@ def run_tests(number, border):
     mfp = make_factored_polynoms(number, border)
     p = make_polynoms(mfp)
     for i in range(number):
-        print '-' + str(i + 1) + '-'
-        print mfp[i], '\t', p[i], '\t', launch_factory(p[i]['a'], p[i]['b'], p[i]['c'], True)
+        print('-' + str(i + 1) + '-')
+        print(mfp[i], '\t', p[i], '\t', launch_factory(p[i]['a'], p[i]['b'], p[i]['c'], True))
 
 
 if __name__ == "__main__":
-    # run_tests(5, 10)
-    # print
-    print launch_factory(1, -2, 4)
+    print(launch_factory(1, -2, 4))

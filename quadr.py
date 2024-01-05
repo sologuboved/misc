@@ -33,17 +33,17 @@ class Equation(object):
 
 def launch(a, b, c, discr=False, fullness=2):
     if discr:
-        print Equation(a, b, c).discr
+        print(Equation(a, b, c).discr)
     else:
-        print Equation(a, b, c).find_solution(fullness)
+        print(Equation(a, b, c).find_solution(fullness))
 
 
 def run_tests(number, border, fullness=2):
     mfp = make_factored_polynoms(number, border)
     p = make_polynoms(mfp)
     for i in range(number):
-        print '-' + str(i + 1) + '-'
-        print mfp[i], '\t', p[i], '\t', Equation(p[i]['a'], p[i]['b'], p[i]['c']).find_solution(fullness)
+        print('-' + str(i + 1) + '-')
+        print(mfp[i], '\t', p[i], '\t', Equation(p[i]['a'], p[i]['b'], p[i]['c']).find_solution(fullness))
 
 
 if __name__ == "__main__":
