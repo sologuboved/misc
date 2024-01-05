@@ -1,9 +1,10 @@
 from collections import defaultdict
+import os
 
 import requests
 
 from global_vars import HEADERS
-from helpers import CsvWriter, dump_utf_json, read_csv, which_watch
+from helpers import CsvWriter, get_abs_path, read_csv, which_watch
 
 
 class Urlage:
@@ -46,10 +47,17 @@ class Urlage:
         except BaseException:
             raise
         finally:
-            dump_utf_json(self.aberrant_codes, 'collection_aberrant.json')
+            headers = ('url', 'title', 'author', 'pairing', 'translator', 'comment', 'fandom')
+            for aberration in self.aberrant_codes:
+                with CsvWriter(
+                        os.path.join(os.sep, get_abs_path('collection'), f'collection_aberrant_{aberration}.csv'),
+                        headers=headers,
+                        as_dict=True,
+                ) as handler:
+                    handler.bulk(self.aberrant_codes[aberration])
             with CsvWriter(
-                    'collection_old.csv',
-                    headers=('url', 'title', 'author', 'pairing', 'translator', 'comment', 'fandom'),
+                    os.path.join(os.sep, get_abs_path('collection'), 'collection_200.csv'),
+                    headers=headers,
                     as_dict=True,
             ) as handler:
                 handler.bulk(self.code200)
