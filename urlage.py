@@ -27,7 +27,7 @@ class Urlage:
                     requests.exceptions.ConnectTimeout,
                     requests.exceptions.ReadTimeout,
             ) as e:
-                self.aberrant_codes[str(e)].append(row)
+                self.aberrant_codes[type(e).__name__].append(row)
             else:
                 code = response.status_code
                 if code == 200:
