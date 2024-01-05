@@ -33,10 +33,13 @@ class Urlage:
                 code = response.status_code
                 if code == 200:
                     title = row['title']
-                    if (not title) or title[:20] in response.text:
-                        self.code200.append(row)
+                    if title:
+                        if title[:20] in response.text:
+                            self.code200.append(row)
+                        else:
+                            self.aberrant_codes["title_not_found"].append(row)
                     else:
-                        self.aberrant_codes["title_not_found"].append(row)
+                        self.aberrant_codes['title_missing'].append(row)
                 else:
                     self.aberrant_codes[str(code)].append(row)
 
