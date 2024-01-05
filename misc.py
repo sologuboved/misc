@@ -36,6 +36,3 @@ def turn_to_text(filename):
                 ending = ". "
             text += line[0].upper() + line[1: -1] + ending
     print(text)
-
-
-
